@@ -1,5 +1,8 @@
 ﻿
 import { useEffect, useMemo, useRef, useState } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "./firebase";
+import AuthScreen from "./AuthScreen";
 import {
   LayoutDashboard, ArrowLeftRight, CreditCard, Bot, Settings,
   Bell, Search, Plus, RefreshCw, ArrowUpRight,
@@ -15,6 +18,8 @@ import "./App.css";
 const API = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(undefined);
+  useEffect(() => onAuthStateChanged(auth, setCurrentUser), []);
   const [transactions, setTransactions] = useState([]);
   const [insights, setInsights] = useState(null);
   const [insightsLoading, setInsightsLoading] = useState(true);
@@ -310,6 +315,14 @@ function App() {
       maximumFractionDigits: 2
     }).format(Number(amount || 0));
 
+  if (currentUser === undefined) {
+    return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",background:"#07111f",color:"white"}}>Loading PayPilot AI...</div>;
+  }
+
+  if (!currentUser) {
+    return <AuthScreen />;
+  }
+
   return (
     <div className="app-shell">
 
@@ -364,8 +377,15 @@ function App() {
             <div className="avatar">PP</div>
 
             <div>
-              <strong>PayPilot User</strong>
+              <strong>{currentUser.email}</strong>
               <small>Personal account</small>
+              <button
+                type="button"
+                onClick={() => signOut(auth)}
+                style={{marginTop:"8px",background:"#1e293b",color:"#fff",border:"1px solid #475569",borderRadius:"6px",padding:"5px 10px",cursor:"pointer"}}
+              >
+                Logout
+              </button>
             </div>
           </div>
 
@@ -1232,4 +1252,7 @@ function App() {
 }
 
 export default App;
+
+
+
 
