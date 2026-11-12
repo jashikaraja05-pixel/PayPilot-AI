@@ -1,5 +1,5 @@
-
-import { useEffect, useMemo, useState } from "react";
+﻿
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   LayoutDashboard, ArrowLeftRight, CreditCard, Bot, Settings,
   Bell, Search, Plus, RefreshCw, ArrowUpRight,
@@ -27,6 +27,7 @@ function App() {
   const [activePage, setActivePage] = useState("Overview");
   const [showPayment, setShowPayment] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const paymentSubmitting = useRef(false);
   const [paymentMessage, setPaymentMessage] = useState("");
   const [mobileMenu, setMobileMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -231,6 +232,9 @@ function App() {
   async function createPaymentOrder(event) {
     event.preventDefault();
 
+    if (paymentSubmitting.current) return;
+    paymentSubmitting.current = true;
+
     setPaymentLoading(true);
     setPaymentMessage("");
 
@@ -276,6 +280,7 @@ function App() {
       await loadInsights();
       await loadMonthlyAnalytics();
     } finally {
+      paymentSubmitting.current = false;
       setPaymentLoading(false);
     }
   }
@@ -577,7 +582,7 @@ function App() {
             <section className="welcome-row">
 
               <div>
-                <h2>Welcome back 👋</h2>
+                <h2>Welcome back ­ƒæï</h2>
                 <p>
                   Here is what's happening with your finances.
                 </p>
@@ -753,8 +758,8 @@ function App() {
                     {(insights.alerts || []).length ? (
                       insights.alerts.map((alert, index) => (
                         <div key={`${alert.type}-${alert.transaction_id}-${index}`} className="error-banner" style={{ marginBottom: "10px" }}>
-                          <strong>{String(alert.type || "alert").toUpperCase()}</strong> — {alert.message}
-                          <div style={{ marginTop: "5px", fontSize: "13px" }}>Transaction #{alert.transaction_id} · {alert.currency} {Number(alert.amount).toLocaleString("en-US", { maximumFractionDigits: 2 })}</div>
+                          <strong>{String(alert.type || "alert").toUpperCase()}</strong> ÔÇö {alert.message}
+                          <div style={{ marginTop: "5px", fontSize: "13px" }}>Transaction #{alert.transaction_id} ┬À {alert.currency} {Number(alert.amount).toLocaleString("en-US", { maximumFractionDigits: 2 })}</div>
                         </div>
                       ))
                     ) : (
@@ -849,7 +854,7 @@ function App() {
                   <div>
                     <h3>Payment activity</h3>
                     <p>
-                      Completed transaction volume · Last 7 days
+                      Completed transaction volume ┬À Last 7 days
                     </p>
                   </div>
 
@@ -1129,7 +1134,7 @@ function App() {
                 className="icon-button"
                 onClick={() => setShowPayment(false)}
               >
-                ×
+                ├ù
               </button>
 
             </div>
@@ -1179,9 +1184,9 @@ function App() {
                   })
                 }
               >
-                <option value="USD">USD — US Dollar</option>
-                <option value="EUR">EUR — Euro</option>
-                <option value="GBP">GBP — Pound Sterling</option>
+                <option value="USD">USD ÔÇö US Dollar</option>
+                <option value="EUR">EUR ÔÇö Euro</option>
+                <option value="GBP">GBP ÔÇö Pound Sterling</option>
               </select>
 
               <label>Category</label>
@@ -1227,3 +1232,4 @@ function App() {
 }
 
 export default App;
+
