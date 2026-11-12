@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import AuthScreen from "./AuthScreen";
+import AccountPanel from "./AccountPanel";
 import {
   LayoutDashboard, ArrowLeftRight, CreditCard, Bot, Settings,
   Bell, Search, Plus, RefreshCw, ArrowUpRight,
@@ -19,6 +20,7 @@ const API = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [activePanel, setActivePanel] = useState(null);
   useEffect(() => onAuthStateChanged(auth, setCurrentUser), []);
   const [transactions, setTransactions] = useState([]);
   const [insights, setInsights] = useState(null);
@@ -369,15 +371,15 @@ function App() {
             <p>Your financial overview, all in one place.</p>
           </div>
 
-          <button className="nav-item">
+          <button className="nav-item" onClick={() => setActivePanel("settings")}>
             <Settings size={19} /> Settings
           </button>
 
           <div className="profile">
-            <div className="avatar">PP</div>
+            <button type="button" className="avatar" title="Profile" onClick={() => setActivePanel("profile")} style={{cursor:"pointer",border:0}}>{(currentUser.displayName || currentUser.email || "P").slice(0,1).toUpperCase()}</button>
 
             <div>
-              <strong>{currentUser.email}</strong>
+              <strong>{currentUser.displayName || currentUser.email}</strong>
               <small>Personal account</small>
               <button
                 type="button"
@@ -435,11 +437,12 @@ function App() {
             <button
               className="icon-button"
               title="Notifications"
+              onClick={() => setActivePanel("notifications")}
             >
               <Bell size={19} />
             </button>
 
-            <div className="avatar top-avatar">PP</div>
+            <button type="button" className="avatar top-avatar" title="Profile" onClick={() => setActivePanel("profile")} style={{cursor:"pointer",border:0}}>{(currentUser.displayName || currentUser.email || "P").slice(0,1).toUpperCase()}</button>
 
           </div>
         </header>
@@ -1252,6 +1255,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
