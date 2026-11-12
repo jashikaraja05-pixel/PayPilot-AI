@@ -1249,12 +1249,14 @@ function App() {
           </div>
         </div>
       )}
-
+
+      <AccountPanel activePanel={activePanel} setActivePanel={setActivePanel} user={currentUser} transactions={transactions} />
     </div>
   );
 }
 
 export default App;
+
 
 
 
