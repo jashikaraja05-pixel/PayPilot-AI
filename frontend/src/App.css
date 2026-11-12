@@ -810,3 +810,56 @@ tbody tr:last-child td {
 
   .welcome-actions button { flex: 1; }
 }
+/* PayPilot AI global light theme */
+html[data-paypilot-theme="light"] body,
+html[data-paypilot-theme="light"] #root { background:#f4f7fc !important; color:#172033 !important; }
+html[data-paypilot-theme="light"] #root, html[data-paypilot-theme="light"] #root * { color-scheme:light; }
+html[data-paypilot-theme="light"] .sidebar,
+html[data-paypilot-theme="light"] aside,
+html[data-paypilot-theme="light"] .main-sidebar { background:#fff !important; color:#172033 !important; border-color:#e2e8f0 !important; }
+html[data-paypilot-theme="light"] .main-content,
+html[data-paypilot-theme="light"] main,
+html[data-paypilot-theme="light"] .content,
+html[data-paypilot-theme="light"] .app-content { background:#f4f7fc !important; color:#172033 !important; }
+html[data-paypilot-theme="light"] .topbar,
+html[data-paypilot-theme="light"] header { background:#fff !important; color:#172033 !important; border-color:#e2e8f0 !important; }
+html[data-paypilot-theme="light"] .stat-card,
+html[data-paypilot-theme="light"] .panel,
+html[data-paypilot-theme="light"] .card,
+html[data-paypilot-theme="light"] .chart-panel,
+html[data-paypilot-theme="light"] .breakdown-panel,
+html[data-paypilot-theme="light"] .summary-card,
+html[data-paypilot-theme="light"] .transaction-card { background:#fff !important; color:#172033 !important; border-color:#e2e8f0 !important; box-shadow:0 4px 18px rgba(15,23,42,.05) !important; }
+html[data-paypilot-theme="light"] .sidebar *,
+html[data-paypilot-theme="light"] .main-content *,
+html[data-paypilot-theme="light"] main *,
+html[data-paypilot-theme="light"] header * { border-color:#e2e8f0; }
+html[data-paypilot-theme="light"] h1,
+html[data-paypilot-theme="light"] h2,
+html[data-paypilot-theme="light"] h3,
+html[data-paypilot-theme="light"] h4,
+html[data-paypilot-theme="light"] strong,
+html[data-paypilot-theme="light"] label,
+html[data-paypilot-theme="light"] th,
+html[data-paypilot-theme="light"] td,
+html[data-paypilot-theme="light"] p,
+html[data-paypilot-theme="light"] span { color:#263247; }
+html[data-paypilot-theme="light"] .nav-item,
+html[data-paypilot-theme="light"] .nav-item span,
+html[data-paypilot-theme="light"] .sidebar button,
+html[data-paypilot-theme="light"] .sidebar p { color:#475569 !important; }
+html[data-paypilot-theme="light"] .nav-item.active,
+html[data-paypilot-theme="light"] .nav-item:hover { background:#eeeaff !important; color:#6848d8 !important; }
+html[data-paypilot-theme="light"] input,
+html[data-paypilot-theme="light"] select,
+html[data-paypilot-theme="light"] textarea { background:#fff !important; color:#172033 !important; border-color:#cbd5e1 !important; }
+html[data-paypilot-theme="light"] input::placeholder,
+html[data-paypilot-theme="light"] textarea::placeholder { color:#8491a5 !important; }
+html[data-paypilot-theme="light"] table,
+html[data-paypilot-theme="light"] tr,
+html[data-paypilot-theme="light"] td,
+html[data-paypilot-theme="light"] th { background-color:transparent; color:#263247; border-color:#e2e8f0 !important; }
+html[data-paypilot-theme="light"] button:not(.primary-button):not(.avatar) { color:#334155; }
+html[data-paypilot-theme="light"] .mobile-toggle { color:#334155 !important; }
+html[data-paypilot-theme="light"] .modal,
+html[data-paypilot-theme="light"] .modal-content { background:#fff !important; color:#172033 !important; }
