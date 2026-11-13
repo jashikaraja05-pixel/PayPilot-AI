@@ -224,3 +224,63 @@ def ask_finance_assistant(question: str, db: Session):
         "failed payments, pending payments, category totals, "
         "highest transaction, recent transactions or alerts."
     )
+
+
+async def ask_finance_assistant_with_openai(question: str, db: Session):
+    import json
+    import os
+    from pathlib import Path
+    from dotenv import load_dotenv
+    from openai import AsyncOpenAI
+
+    load_dotenv(Path(__file__).resolve().parent / ".env")
+    api_key = os.getenv("OPENAI_API_KEY")
+
+    if not api_key:
+        return ask_finance_assistant(question, db), "database_rule_based_fallback"
+
+    data = get_transaction_insights(db)
+    safe_context = {
+        "total_transactions": data["total_transactions"],
+        "completed_count": data["completed_count"],
+        "failed_count": data["failed_count"],
+        "pending_count": data["pending_count"],
+        "category_totals": data["category_totals"],
+        "currency_totals": data["currency_totals"],
+        "highest_transaction": (
+            {
+                "amount": data["highest_transaction"]["amount"],
+                "currency": data["highest_transaction"]["currency"],
+                "status": data["highest_transaction"]["status"]
+            } if data["highest_transaction"] else None
+        )
+    }
+
+    model = os.getenv("OPENAI_MODEL", "gpt-5.5")
+
+    async with AsyncOpenAI(api_key=api_key) as client:
+        response = await client.responses.create(
+            model=model,
+            instructions=(
+                "You are PayPilot AI, a careful personal finance assistant. "
+                "Answer using the supplied transaction data. "
+                "Never invent balances, transactions, or financial facts. "
+                "Clearly state when data is insufficient. "
+                "Give practical, concise explanations. "
+                "Do not claim to execute payments or financial actions. "
+                "You are not a licensed financial advisor."
+            ),
+            input=(
+                "Transaction summary (JSON): "
+                + json.dumps(safe_context, ensure_ascii=False)
+                + "\n\nUser question: "
+                + question
+            ),
+            max_output_tokens=500
+        )
+
+    answer = response.output_text.strip()
+    if not answer:
+        raise RuntimeError("OpenAI returned an empty response.")
+
+    return answer, "openai_responses_api"

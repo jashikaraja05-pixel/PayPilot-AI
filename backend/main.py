@@ -15,6 +15,7 @@ from paypal_service import create_paypal_order, capture_paypal_order
 
 from ai_service import (
     ask_finance_assistant,
+    ask_finance_assistant_with_openai,
     get_transaction_insights,
     get_monthly_financial_analytics
 )
@@ -200,12 +201,12 @@ def get_transaction(
 # -------------------------
 
 @app.post("/ai/ask")
-def finance_assistant(
+async def finance_assistant(
     request: AIQuestion,
     db: Session = Depends(get_db)
 ):
     try:
-        answer = ask_finance_assistant(
+        answer, mode = await ask_finance_assistant_with_openai(
             question=request.question,
             db=db
         )
@@ -214,13 +215,13 @@ def finance_assistant(
             "question": request.question,
             "answer": answer,
             "assistant": "PayPilot Finance Assistant",
-            "mode": "database_rule_based"
+            "mode": mode
         }
 
     except Exception:
         raise HTTPException(
-            status_code=500,
-            detail="Unable to process your finance question."
+            status_code=503,
+            detail="Unable to process your finance question. Please check the AI service configuration and try again."
         )
 
 
