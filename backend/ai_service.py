@@ -267,7 +267,7 @@ async def ask_finance_assistant_with_gemini(question: str, db: Session):
 
         with genai.Client(
             api_key=api_key,
-            http_options=types.HttpOptions(timeout=20000)
+            http_options=types.HttpOptions(timeout=90000)
         ) as client:
             response = client.models.generate_content(
                 model=model,
