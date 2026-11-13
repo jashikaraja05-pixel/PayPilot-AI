@@ -1,3 +1,4 @@
+import logging
 
 from decimal import Decimal
 from typing import Optional, Literal
@@ -218,10 +219,11 @@ async def finance_assistant(
             "mode": mode
         }
 
-    except Exception:
+    except Exception as exc:
+        logging.exception("Finance Assistant OpenAI request failed: %s", exc)
         raise HTTPException(
             status_code=503,
-            detail="Unable to process your finance question. Please check the AI service configuration and try again."
+            detail="Unable to process your finance question. Please check the backend logs."
         )
 
 
