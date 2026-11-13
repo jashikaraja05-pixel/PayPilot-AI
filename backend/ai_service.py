@@ -263,12 +263,17 @@ async def ask_finance_assistant_with_gemini(question: str, db: Session):
     model = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 
     def generate():
-        client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model=model,
-            contents=prompt
-        )
-        return response.text
+        from google.genai import types
+
+        with genai.Client(
+            api_key=api_key,
+            http_options=types.HttpOptions(timeout=20000)
+        ) as client:
+            response = client.models.generate_content(
+                model=model,
+                contents=prompt
+            )
+            return response.text
 
     try:
         answer = await asyncio.to_thread(generate)
