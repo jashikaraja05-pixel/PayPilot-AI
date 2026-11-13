@@ -16,7 +16,7 @@ from paypal_service import create_paypal_order, capture_paypal_order
 
 from ai_service import (
     ask_finance_assistant,
-    ask_finance_assistant_with_openai,
+    ask_finance_assistant_with_gemini,
     get_transaction_insights,
     get_monthly_financial_analytics
 )
@@ -207,7 +207,7 @@ async def finance_assistant(
     db: Session = Depends(get_db)
 ):
     try:
-        answer, mode = await ask_finance_assistant_with_openai(
+        answer, mode = await ask_finance_assistant_with_gemini(
             question=request.question,
             db=db
         )
